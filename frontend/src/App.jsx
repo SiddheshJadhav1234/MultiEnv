@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react'
 import './App.css'
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
-const NODE_ENV = import.meta.env.MODE;
+const NODE_ENV = import.meta.env.VITE_ENV;
+
 
 
 function App() {
