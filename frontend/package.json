@@ -8,14 +8,14 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --mode development",
-    "test": "vite --mode testing",
-    "stage": "vite --mode staging",
-    "prod": "vite --mode production",
-    "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
-  },
+  "dev": "vite --mode development",
+  "test": "vite --mode testing --force",
+  "stage": "vite --mode staging --force",
+  "prod": "vite --mode production",
+  "build": "vite build",
+  "preview": "vite preview"
+}
+,
   "dependencies": {
     "react": "^19.2.0",
     "react-dom": "^19.2.0"

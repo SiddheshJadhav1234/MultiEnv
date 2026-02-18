@@ -54,75 +54,96 @@ function App() {
     }
   };
 
+  const getEnvClass = () => {
+    if (NODE_ENV === 'production') return 'env-prod';
+    if (NODE_ENV === 'staging') return 'env-stage';
+    if (NODE_ENV === 'testing') return 'env-test';
+    return 'env-dev';
+  };
+
   return (
     <div className="App">
-      <h1>MERN Multi-Environment App</h1>
-      
-      <div className="env-badge" style={{
-        background: NODE_ENV === 'production' ? '#dc3545' : 
-                   NODE_ENV === 'staging' ? '#ffc107' : 
-                   NODE_ENV === 'testing' ? '#17a2b8' : '#28a745',
-        color: 'white',
-        padding: '10px 20px',
-        borderRadius: '5px',
-        margin: '20px 0'
-      }}>
-        🚀 Environment: {NODE_ENV?.toUpperCase() || 'UNKNOWN'}
-      </div>
+      <div className="container">
+        <header className="header">
+          <h1 className="title">MERN Multi-Environment</h1>
+          <p className="subtitle">Professional Dashboard</p>
+        </header>
 
-      {health && (
-        <div className="health-status" style={{
-          background: '#f8f9fa',
-          padding: '15px',
-          borderRadius: '5px',
-          marginBottom: '20px',
-          color: '#000'
-        }}>
-          <h3>System Health</h3>
-          <p>Status: {health.status}</p>
-          <p>Database: {health.database}</p>
-          <p>API: {API_BASE_URL}</p>
+        <div className={`env-badge glass-card ${getEnvClass()}`}>
+          <span className="env-icon">🚀</span>
+          <span className="env-text">{NODE_ENV?.toUpperCase() || 'UNKNOWN'}</span>
         </div>
-      )}
 
-      <div className="user-form" style={{ marginBottom: '30px' }}>
-        <h3>Add User</h3>
-        <form onSubmit={addUser}>
-          <input
-            type="text"
-            placeholder="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            style={{ margin: '5px', padding: '8px' }}
-          />
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            style={{ margin: '5px', padding: '8px' }}
-          />
-          <button type="submit" style={{ margin: '5px', padding: '8px 20px' }}>
-            Add User
-          </button>
-        </form>
-      </div>
-
-      <div className="users-list">
-        <h3>Users ({users.length})</h3>
-        {users.map((user) => (
-          <div key={user._id} style={{
-            background: '#f8f9fa',
-            padding: '10px',
-            margin: '5px 0',
-            borderRadius: '5px',
-            color: '#000'
-          }}>
-            <strong>{user.name}</strong> - {user.email}
+        {health && (
+          <div className="health-card glass-card">
+            <h3 className="card-title">System Health</h3>
+            <div className="health-grid">
+              <div className="health-item">
+                <span className="label">Status</span>
+                <span className="value status-ok">{health.status}</span>
+              </div>
+              <div className="health-item">
+                <span className="label">Database</span>
+                <span className="value">{health.database}</span>
+              </div>
+              <div className="health-item full-width">
+                <span className="label">API Endpoint</span>
+                <span className="value api-url">{API_BASE_URL}</span>
+              </div>
+            </div>
           </div>
-        ))}
+        )}
+
+        <div className="user-form glass-card">
+          <h3 className="card-title">Add New User</h3>
+          <form onSubmit={addUser}>
+            <div className="form-group">
+              <input
+                type="text"
+                placeholder="Enter name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="input-field"
+              />
+            </div>
+            <div className="form-group">
+              <input
+                type="email"
+                placeholder="Enter email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="input-field"
+              />
+            </div>
+            <button type="submit" className="btn-submit">
+              <span>Add User</span>
+            </button>
+          </form>
+        </div>
+
+        <div className="users-section glass-card">
+          <div className="users-header">
+            <h3 className="card-title">Users</h3>
+            <span className="user-count">{users.length}</span>
+          </div>
+          <div className="users-list">
+            {users.length === 0 ? (
+              <p className="empty-state">No users yet. Add one above!</p>
+            ) : (
+              users.map((user) => (
+                <div key={user._id} className="user-card">
+                  <div className="user-avatar">{user.name.charAt(0).toUpperCase()}</div>
+                  <div className="user-info">
+                    <span className="user-name">{user.name}</span>
+                    <span className="user-email">{user.email}</span>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
       </div>
     </div>
   )
