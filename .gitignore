@@ -9,12 +9,14 @@ package-lock.json
 yarn.lock
 
 # =========================
-# Environment Files (Backend secrets)
+# Backend Environment Files (ROOT ONLY)
 # =========================
-.env
-.env.*
+/.env
+/.env.*
 backend/.env*
-!.env.example
+
+# Allow frontend env files
+!frontend/.env.*
 
 # =========================
 # Vercel
