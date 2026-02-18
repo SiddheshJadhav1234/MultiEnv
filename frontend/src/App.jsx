@@ -67,7 +67,7 @@ function App() {
         borderRadius: '5px',
         margin: '20px 0'
       }}>
-        🚀 Environment: {NODE_ENV.toUpperCase()}
+        🚀 Environment: {NODE_ENV?.toUpperCase() || 'UNKNOWN'}
       </div>
 
       {health && (
