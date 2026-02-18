@@ -9,8 +9,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite --mode development",
-    "test": "vite --mode testing",
-    "stage": "vite --mode staging",
+    "test": "vite --mode testing --force",
+    "stage": "vite --mode staging --force",
     "prod": "vite --mode production",
     "build": "vite build",
     "lint": "eslint .",

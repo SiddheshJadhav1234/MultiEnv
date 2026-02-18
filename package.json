@@ -13,7 +13,10 @@
     "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install",
     "validate": "node validate-setup.js"
   },
-  "keywords": ["mern", "multi-environment"],
+  "keywords": [
+    "mern",
+    "multi-environment"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
