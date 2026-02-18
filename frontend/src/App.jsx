@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 
-const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:5000/api';
-const NODE_ENV = process.env.NODE_ENV || 'development';
+const API_BASE_URL = import.meta.env.VITE_API_URL + "/api";
+const NODE_ENV = import.meta.env.VITE_ENV;
+
+
 
 function App() {
   const [health, setHealth] = useState(null);
@@ -65,7 +67,7 @@ function App() {
         borderRadius: '5px',
         margin: '20px 0'
       }}>
-        🚀 Environment: {NODE_ENV.toUpperCase()}
+        🚀 Environment: {NODE_ENV?.toUpperCase() || 'UNKNOWN'}
       </div>
 
       {health && (
