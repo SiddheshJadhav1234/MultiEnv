@@ -6,10 +6,10 @@
   "scripts": {
     "server": "cd backend && npm start",
     "client": "cd frontend && npm run dev",
-    "dev": "cross-env NODE_ENV=development concurrently \"npm run server\" \"npm run client\"",
-    "test": "cross-env NODE_ENV=testing concurrently \"npm run server\" \"npm run client\"",
-    "stage": "cross-env NODE_ENV=staging concurrently \"npm run server\" \"npm run client\"",
-    "prod": "cross-env NODE_ENV=production concurrently \"npm run server\" \"npm run client\"",
+    "dev": "cross-env NODE_ENV=development concurrently \"npm run server\" \"cd frontend && npm run dev\"",
+    "test": "cross-env NODE_ENV=testing concurrently \"npm run server\" \"cd frontend && npm run test\"",
+    "stage": "cross-env NODE_ENV=staging concurrently \"npm run server\" \"cd frontend && npm run stage\"",
+    "prod": "cross-env NODE_ENV=production concurrently \"npm run server\" \"cd frontend && npm run prod\"",
     "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install",
     "validate": "node validate-setup.js"
   },

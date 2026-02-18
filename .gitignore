@@ -1,29 +1,51 @@
+# =========================
 # Dependencies
+# =========================
 node_modules/
+backend/node_modules/
+frontend/node_modules/
+
 package-lock.json
 yarn.lock
 
-# Environment files (add to repo as templates, but exclude actual secrets)
-# .env.development
-# .env.testing
-# .env.staging
-# .env.production
+# =========================
+# Environment Files (Backend secrets)
+# =========================
+.env
+.env.*
+backend/.env*
+!.env.example
 
+# =========================
+# Vercel
+# =========================
+frontend/.vercel/
+
+# =========================
+# Build Outputs
+# =========================
+dist/
+build/
+frontend/dist/
+backend/dist/
+
+# =========================
 # Logs
-logs
+# =========================
+logs/
 *.log
 npm-debug.log*
 
-# Build outputs
-dist/
-build/
-
-# IDE
+# =========================
+# IDE & Editor
+# =========================
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# OS
+# =========================
+# OS Files
+# =========================
 .DS_Store
 Thumbs.db
