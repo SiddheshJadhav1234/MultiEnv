@@ -1,20 +1,27 @@
 import { useState, useEffect } from 'react'
 import './App.css'
+import EnvBadge from './components/EnvBadge'
+import Toast from './components/Toast'
+import LoadingSkeleton from './components/LoadingSkeleton'
 
 const API_BASE_URL = import.meta.env.VITE_API_URL + "/api";
 const NODE_ENV = import.meta.env.VITE_ENV;
-
-
 
 function App() {
   const [health, setHealth] = useState(null);
   const [users, setUsers] = useState([]);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [toast, setToast] = useState(null);
 
   useEffect(() => {
-    fetchHealth();
-    fetchUsers();
+    const loadData = async () => {
+      setLoading(true);
+      await Promise.all([fetchHealth(), fetchUsers()]);
+      setLoading(false);
+    };
+    loadData();
   }, []);
 
   const fetchHealth = async () => {
@@ -49,32 +56,27 @@ function App() {
       setUsers([...users, data]);
       setName('');
       setEmail('');
+      setToast({ message: 'User added successfully!', type: 'success' });
     } catch (error) {
       console.error('Add user failed:', error);
+      setToast({ message: 'Failed to add user', type: 'error' });
     }
-  };
-
-  const getEnvClass = () => {
-    if (NODE_ENV === 'production') return 'env-prod';
-    if (NODE_ENV === 'staging') return 'env-stage';
-    if (NODE_ENV === 'testing') return 'env-test';
-    return 'env-dev';
   };
 
   return (
     <div className="App">
+      <EnvBadge env={NODE_ENV} />
+      {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
+      
       <div className="container">
         <header className="header">
-          <h1 className="title">MERN Multi-Environment</h1>
-          <p className="subtitle">Professional Dashboard</p>
+          <h1 className="title">Multi-Environment Dashboard</h1>
+          <p className="subtitle">Manage your application across all environments</p>
         </header>
 
-        <div className={`env-badge glass-card ${getEnvClass()}`}>
-          <span className="env-icon">🚀</span>
-          <span className="env-text">{NODE_ENV?.toUpperCase() || 'UNKNOWN'}</span>
-        </div>
-
-        {health && (
+        {loading ? (
+          <LoadingSkeleton />
+        ) : health ? (
           <div className="health-card glass-card">
             <h3 className="card-title">System Health</h3>
             <div className="health-grid">
@@ -92,7 +94,7 @@ function App() {
               </div>
             </div>
           </div>
-        )}
+        ) : null}
 
         <div className="user-form glass-card">
           <h3 className="card-title">Add New User</h3>
@@ -129,7 +131,9 @@ function App() {
             <span className="user-count">{users.length}</span>
           </div>
           <div className="users-list">
-            {users.length === 0 ? (
+            {loading ? (
+              Array(3).fill(0).map((_, i) => <LoadingSkeleton key={i} type="user" />)
+            ) : users.length === 0 ? (
               <p className="empty-state">No users yet. Add one above!</p>
             ) : (
               users.map((user) => (
