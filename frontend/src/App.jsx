@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL + "/api";
-const NODE_ENV = import.meta.env.VITE_ENV;
-
-
+const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:5000/api';
+const NODE_ENV = process.env.NODE_ENV || 'development';
+const APP_VERSION = '1.1.0';
 
 function App() {
   const [health, setHealth] = useState(null);
@@ -67,7 +66,7 @@ function App() {
         borderRadius: '5px',
         margin: '20px 0'
       }}>
-        🚀 Environment: {NODE_ENV?.toUpperCase() || 'UNKNOWN'}
+        🚀 Environment: {NODE_ENV.toUpperCase()} &nbsp;|&nbsp; v{APP_VERSION}
       </div>
 
       {health && (
@@ -124,6 +123,17 @@ function App() {
           </div>
         ))}
       </div>
+
+      <footer style={{
+        marginTop: '40px',
+        paddingTop: '20px',
+        borderTop: '1px solid rgba(255,255,255,0.1)',
+        textAlign: 'center',
+        color: 'rgba(255,255,255,0.45)',
+        fontSize: '0.85rem'
+      }}>
+        Developed by <strong style={{ color: 'rgba(255,255,255,0.75)' }}>Siddhesh Jadhav</strong>
+      </footer>
     </div>
   )
 }
