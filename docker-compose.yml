@@ -1,8 +1,8 @@
-version: "3"
-
 services:
 
+  # ── DEV (develop branch) ─────────────────────────────
   backend-dev:
+    profiles: ["dev"]
     build: ./backend
     ports:
       - "5000:5000"
@@ -10,11 +10,72 @@ services:
       - .env.development
 
   frontend-dev:
-    build: ./frontend
+    profiles: ["dev"]
+    build:
+      context: ./frontend
+      args:
+        API_BASE_URL: http://localhost:5000/api
     ports:
-      - "4173:4173"
+      - "5173:4173"
     env_file:
       - .env.development
 
+  # ── TEST (test branch) ────────────────────────────────
+  backend-test:
+    profiles: ["test"]
+    build: ./backend
+    ports:
+      - "5001:5001"
+    env_file:
+      - .env.testing
 
-      
+  frontend-test:
+    profiles: ["test"]
+    build:
+      context: ./frontend
+      args:
+        API_BASE_URL: http://localhost:5001/api
+    ports:
+      - "5174:4173"
+    env_file:
+      - .env.testing
+
+  # ── STAGING (stage branch) ────────────────────────────
+  backend-staging:
+    profiles: ["staging"]
+    build: ./backend
+    ports:
+      - "5002:5002"
+    env_file:
+      - .env.staging
+
+  frontend-staging:
+    profiles: ["staging"]
+    build:
+      context: ./frontend
+      args:
+        API_BASE_URL: http://localhost:5002/api
+    ports:
+      - "5175:4173"
+    env_file:
+      - .env.staging
+
+  # ── PRODUCTION (main branch) ──────────────────────────
+  backend-prod:
+    profiles: ["prod"]
+    build: ./backend
+    ports:
+      - "5003:5003"
+    env_file:
+      - .env.production
+
+  frontend-prod:
+    profiles: ["prod"]
+    build:
+      context: ./frontend
+      args:
+        API_BASE_URL: http://localhost:5003/api
+    ports:
+      - "5176:4173"
+    env_file:
+      - .env.production

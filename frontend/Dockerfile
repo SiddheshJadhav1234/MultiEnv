@@ -8,8 +8,11 @@ RUN npm install
 
 COPY . .
 
+ARG API_BASE_URL=http://localhost:5000/api
+ENV API_BASE_URL=$API_BASE_URL
+
 RUN npm run build
 
-EXPOSE 5173
+EXPOSE 4173
 
 CMD ["npm","run","preview"]
