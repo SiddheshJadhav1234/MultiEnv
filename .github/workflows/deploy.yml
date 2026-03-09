@@ -3,7 +3,7 @@ name: MultiEnv CI/CD
 on:
   push:
     branches:
-      - develop
+      - dev
       - test
       - stage
       - main
