@@ -50,4 +50,5 @@ jobs:
             git checkout ${{ env.DEPLOY_BRANCH }}
             git pull origin ${{ env.DEPLOY_BRANCH }}
             docker compose --profile ${{ env.DEPLOY_PROFILE }} down
-            docker compose --profile ${{ env.DEPLOY_PROFILE }} up -d --build
+            docker compose --profile ${{ env.DEPLOY_PROFILE }} build --no-cache
+            docker compose --profile ${{ env.DEPLOY_PROFILE }} up -d
