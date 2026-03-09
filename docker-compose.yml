@@ -15,6 +15,7 @@ services:
       context: ./frontend
       args:
         API_BASE_URL: http://localhost:5000/api
+        NODE_ENV: development
     ports:
       - "5173:4173"
     env_file:
@@ -35,6 +36,7 @@ services:
       context: ./frontend
       args:
         API_BASE_URL: http://localhost:5001/api
+        NODE_ENV: testing
     ports:
       - "5174:4173"
     env_file:
@@ -55,6 +57,7 @@ services:
       context: ./frontend
       args:
         API_BASE_URL: http://localhost:5002/api
+        NODE_ENV: staging
     ports:
       - "5175:4173"
     env_file:
@@ -75,6 +78,7 @@ services:
       context: ./frontend
       args:
         API_BASE_URL: http://localhost:5003/api
+        NODE_ENV: production
     ports:
       - "5176:4173"
     env_file:
