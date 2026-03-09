@@ -52,3 +52,5 @@ jobs:
             docker compose --profile ${{ env.DEPLOY_PROFILE }} down
             docker compose --profile ${{ env.DEPLOY_PROFILE }} build --no-cache
             docker compose --profile ${{ env.DEPLOY_PROFILE }} up -d
+            docker compose up -d nginx
+            docker compose exec -T nginx nginx -s reload

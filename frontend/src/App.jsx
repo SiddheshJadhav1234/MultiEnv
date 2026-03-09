@@ -77,7 +77,7 @@ function App() {
           marginBottom: '20px',
           color: '#000'
         }}>
-          <h3>System Health</h3>
+          <h3>System Health </h3>
           <p>Status: {health.status}</p>
           <p>Database: {health.database}</p>
           <p>API: {API_BASE_URL}</p>
@@ -132,7 +132,7 @@ function App() {
         color: 'rgba(255,255,255,0.45)',
         fontSize: '0.85rem'
       }}>
-        Developed by <strong style={{ color: 'rgba(255,255,255,0.75)' }}>Siddhesh Jadhav</strong>
+        Developed by <strong style={{ color: 'rgba(255,255,255,0.75)' }}>Siddhesh Jadhav & Vivek Jangam</strong>
       </footer>
     </div>
   )
