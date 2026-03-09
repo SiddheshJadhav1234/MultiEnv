@@ -2,7 +2,7 @@
 node_modules/
 package-lock.json
 yarn.lock
-
+secrets/
 # Environment files (add to repo as templates, but exclude actual secrets)
 # .env.development
 # .env.testing
@@ -30,3 +30,4 @@ build/
 # OS
 .DS_Store
 Thumbs.db
+.vercel

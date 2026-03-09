@@ -1,27 +1,19 @@
 import { useState, useEffect } from 'react'
 import './App.css'
-import EnvBadge from './components/EnvBadge'
-import Toast from './components/Toast'
-import LoadingSkeleton from './components/LoadingSkeleton'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL + "/api";
-const NODE_ENV = import.meta.env.VITE_ENV;
+const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:5000/api';
+const NODE_ENV = process.env.NODE_ENV || 'development';
+const APP_VERSION = '1.1.0';
 
 function App() {
   const [health, setHealth] = useState(null);
   const [users, setUsers] = useState([]);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [toast, setToast] = useState(null);
 
   useEffect(() => {
-    const loadData = async () => {
-      setLoading(true);
-      await Promise.all([fetchHealth(), fetchUsers()]);
-      setLoading(false);
-    };
-    loadData();
+    fetchHealth();
+    fetchUsers();
   }, []);
 
   const fetchHealth = async () => {
@@ -56,98 +48,80 @@ function App() {
       setUsers([...users, data]);
       setName('');
       setEmail('');
-      setToast({ message: 'User added successfully!', type: 'success' });
     } catch (error) {
       console.error('Add user failed:', error);
-      setToast({ message: 'Failed to add user', type: 'error' });
     }
   };
 
   return (
     <div className="App">
-      <EnvBadge env={NODE_ENV} />
-      {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
+      <h1>MERN Multi-Environment App</h1>
       
-      <div className="container">
-        <header className="header">
-          <h1 className="title">Multi-Environment Dashboard</h1>
-          <p className="subtitle">Manage your application across all environments</p>
-        </header>
+      <div className="env-badge" style={{
+        background: NODE_ENV === 'production' ? '#dc3545' : 
+                   NODE_ENV === 'staging' ? '#ffc107' : 
+                   NODE_ENV === 'testing' ? '#17a2b8' : '#28a745',
+        color: 'white',
+        padding: '10px 20px',
+        borderRadius: '5px',
+        margin: '20px 0'
+      }}>
+        🚀 Environment: {NODE_ENV.toUpperCase()} &nbsp;|&nbsp; v{APP_VERSION}
+      </div>
 
-        {loading ? (
-          <LoadingSkeleton />
-        ) : health ? (
-          <div className="health-card glass-card">
-            <h3 className="card-title">System Health</h3>
-            <div className="health-grid">
-              <div className="health-item">
-                <span className="label">Status</span>
-                <span className="value status-ok">{health.status}</span>
-              </div>
-              <div className="health-item">
-                <span className="label">Database</span>
-                <span className="value">{health.database}</span>
-              </div>
-              <div className="health-item full-width">
-                <span className="label">API Endpoint</span>
-                <span className="value api-url">{API_BASE_URL}</span>
-              </div>
-            </div>
-          </div>
-        ) : null}
-
-        <div className="user-form glass-card">
-          <h3 className="card-title">Add New User</h3>
-          <form onSubmit={addUser}>
-            <div className="form-group">
-              <input
-                type="text"
-                placeholder="Enter name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-                className="input-field"
-              />
-            </div>
-            <div className="form-group">
-              <input
-                type="email"
-                placeholder="Enter email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="input-field"
-              />
-            </div>
-            <button type="submit" className="btn-submit">
-              <span>Add User</span>
-            </button>
-          </form>
+      {health && (
+        <div className="health-status" style={{
+          background: '#f8f9fa',
+          padding: '15px',
+          borderRadius: '5px',
+          marginBottom: '20px',
+          color: '#000'
+        }}>
+          <h3>System Health</h3>
+          <p>Status: {health.status}</p>
+          <p>Database: {health.database}</p>
+          <p>API: {API_BASE_URL}</p>
         </div>
+      )}
 
-        <div className="users-section glass-card">
-          <div className="users-header">
-            <h3 className="card-title">Users</h3>
-            <span className="user-count">{users.length}</span>
+      <div className="user-form" style={{ marginBottom: '30px' }}>
+        <h3>Add User</h3>
+        <form onSubmit={addUser}>
+          <input
+            type="text"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+            style={{ margin: '5px', padding: '8px' }}
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            style={{ margin: '5px', padding: '8px' }}
+          />
+          <button type="submit" style={{ margin: '5px', padding: '8px 20px' }}>
+            Add User
+          </button>
+        </form>
+      </div>
+
+      <div className="users-list">
+        <h3>Users ({users.length})</h3>
+        {users.map((user) => (
+          <div key={user._id} style={{
+            background: '#f8f9fa',
+            padding: '10px',
+            margin: '5px 0',
+            borderRadius: '5px',
+            color: '#000'
+          }}>
+            <strong>{user.name}</strong> - {user.email}
           </div>
-          <div className="users-list">
-            {loading ? (
-              Array(3).fill(0).map((_, i) => <LoadingSkeleton key={i} type="user" />)
-            ) : users.length === 0 ? (
-              <p className="empty-state">No users yet. Add one above!</p>
-            ) : (
-              users.map((user) => (
-                <div key={user._id} className="user-card">
-                  <div className="user-avatar">{user.name.charAt(0).toUpperCase()}</div>
-                  <div className="user-info">
-                    <span className="user-name">{user.name}</span>
-                    <span className="user-email">{user.email}</span>
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   )
