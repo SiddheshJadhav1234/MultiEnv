@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+
+  backend-dev:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env.development
+
+  frontend-dev:
+    build: ./frontend
+    ports:
+      - "4173:4173"
+    env_file:
+      - .env.development
+
+
+      
