@@ -123,6 +123,17 @@ function App() {
           </div>
         ))}
       </div>
+
+      <footer style={{
+        marginTop: '40px',
+        paddingTop: '20px',
+        borderTop: '1px solid rgba(255,255,255,0.1)',
+        textAlign: 'center',
+        color: 'rgba(255,255,255,0.45)',
+        fontSize: '0.85rem'
+      }}>
+        Developed by <strong style={{ color: 'rgba(255,255,255,0.75)' }}>Siddhesh Jadhav</strong>
+      </footer>
     </div>
   )
 }

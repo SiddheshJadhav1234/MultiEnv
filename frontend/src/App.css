@@ -35,7 +35,7 @@ body {
 /* ===== APP CONTAINER ===== */
 .App {
   min-height: 100vh;
-  background: linear-gradient(180deg, #0a0a0a 0%, #111111 100%);
+  background: linear-gradient(135deg, #0d1b2a 0%, #1b2838 50%, #0d1b2a 100%);
   padding: 2rem 1rem;
   position: relative;
 }
