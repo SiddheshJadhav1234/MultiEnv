@@ -21,7 +21,17 @@ jobs:
         uses: tailscale/github-action@v3
         with:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
-  
+
+      - name: Wait for Tailscale and verify connectivity
+        run: |
+          echo "Waiting for Tailscale to be ready..."
+          sleep 5
+          echo "Tailscale status:"
+          tailscale status
+          echo "Pinging server..."
+          tailscale ping ${{ secrets.SERVER_HOST }} || true
+          echo "Testing TCP port 22..."
+          nc -zv ${{ secrets.SERVER_HOST }} 22 || true
 
       - name: Deploy to Laptop Server
         uses: appleboy/ssh-action@v1
@@ -29,6 +39,7 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
+          timeout: 60s
           script: |
             cd C:/Users/vivek126/deployments/MultiEnv
             git pull
