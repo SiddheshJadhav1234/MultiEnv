@@ -3,7 +3,7 @@ import './App.css'
 
 const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:5000/api';
 const NODE_ENV = process.env.NODE_ENV || 'development';
-const APP_VERSION = '1.3.0';
+const APP_VERSION = '1.4.0';
 
 function App() {
   const [health, setHealth] = useState(null);
