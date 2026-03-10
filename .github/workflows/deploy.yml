@@ -46,9 +46,11 @@ jobs:
           timeout: 120s
           script: |
             cd C:/Users/vivek126/deployments/MultiEnv
-            git fetch --all
-            git checkout ${{ env.DEPLOY_BRANCH }}
-            git pull origin ${{ env.DEPLOY_BRANCH }}
+            echo "Updating repository..."
+            git fetch origin
+            git reset --hard origin/${{ env.DEPLOY_BRANCH }}
+            git clean -fd
+            echo "Rebuilding containers..."
             docker compose --profile ${{ env.DEPLOY_PROFILE }} down
             docker compose --profile ${{ env.DEPLOY_PROFILE }} build --no-cache
             docker compose --profile ${{ env.DEPLOY_PROFILE }} up -d
