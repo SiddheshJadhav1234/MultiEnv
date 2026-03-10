@@ -3,7 +3,7 @@ import './App.css'
 
 const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:5000/api';
 const NODE_ENV = process.env.NODE_ENV || 'development';
-const APP_VERSION = '1.1.0';
+const APP_VERSION = '1.2.0';
 
 function App() {
   const [health, setHealth] = useState(null);
@@ -55,7 +55,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>MERN Multi-Environment App</h1>
+      <h1>MERN Multi-Environment App 🌍</h1>
       
       <div className="env-badge" style={{
         background: NODE_ENV === 'production' ? '#dc3545' : 
