@@ -46,7 +46,6 @@ jobs:
           timeout: 120s
           command_timeout: 30m
           script: |
-            set -e
             cd C:/Users/vivek126/deployments/MultiEnv
             echo "Updating repository..."
             git fetch origin
