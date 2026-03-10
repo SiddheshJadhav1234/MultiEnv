@@ -1,0 +1,53 @@
+name: MultiEnv CI/CD
+
+on:
+  push:
+    branches:
+      - dev
+      - test
+      - stage
+      - main
+
+jobs:
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set deploy profile
+        run: |
+          BRANCH="${{ github.ref_name }}"
+          if [ "$BRANCH" = "main" ]; then
+            echo "DEPLOY_PROFILE=prod" >> $GITHUB_ENV
+          elif [ "$BRANCH" = "stage" ]; then
+            echo "DEPLOY_PROFILE=staging" >> $GITHUB_ENV
+          elif [ "$BRANCH" = "test" ]; then
+            echo "DEPLOY_PROFILE=test" >> $GITHUB_ENV
+          else
+            echo "DEPLOY_PROFILE=dev" >> $GITHUB_ENV
+          fi
+          echo "DEPLOY_BRANCH=$BRANCH" >> $GITHUB_ENV
+
+      - name: Connect to Tailscale
+        uses: tailscale/github-action@v3
+        with:
+          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+
+      - name: Deploy to Laptop Server
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          timeout: 120s
+          command_timeout: 30m
+          script: |
+            cd C:/Users/vivek126/deployments/MultiEnv
+            git fetch origin
+            git reset --hard origin/${{ env.DEPLOY_BRANCH }}
+            git clean -fd
+            powershell -ExecutionPolicy Bypass -NonInteractive -File C:/Users/vivek126/deployments/MultiEnv/scripts/deploy.ps1 -Profile ${{ env.DEPLOY_PROFILE }}
