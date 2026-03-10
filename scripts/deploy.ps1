@@ -11,8 +11,8 @@ docker pull node:18
 
 Write-Host "Rebuilding containers for profile: $Profile..."
 docker compose --profile $Profile down
-docker image rm "multienv-frontend-$Profile" -ErrorAction SilentlyContinue
-docker image rm "multienv-backend-$Profile" -ErrorAction SilentlyContinue
+$null = docker image rm "multienv-frontend-$Profile" 2>&1
+$null = docker image rm "multienv-backend-$Profile" 2>&1
 docker compose --profile $Profile build
 docker compose --profile $Profile up -d --force-recreate
 docker compose up -d nginx
