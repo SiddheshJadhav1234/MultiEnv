@@ -53,7 +53,7 @@ jobs:
             git clean -fd
             echo "Rebuilding containers for profile: ${{ env.DEPLOY_PROFILE }}..."
             docker compose --profile ${{ env.DEPLOY_PROFILE }} down
-            docker compose --profile ${{ env.DEPLOY_PROFILE }} build --no-cache
+            docker compose --profile ${{ env.DEPLOY_PROFILE }} build
             docker compose --profile ${{ env.DEPLOY_PROFILE }} up -d
             docker compose up -d nginx
             docker compose exec -T nginx nginx -s reload
