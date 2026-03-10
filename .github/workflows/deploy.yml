@@ -44,15 +44,18 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           timeout: 120s
+          command_timeout: 30m
           script: |
+            set -e
             cd C:/Users/vivek126/deployments/MultiEnv
             echo "Updating repository..."
             git fetch origin
             git reset --hard origin/${{ env.DEPLOY_BRANCH }}
             git clean -fd
-            echo "Rebuilding containers..."
+            echo "Rebuilding containers for profile: ${{ env.DEPLOY_PROFILE }}..."
             docker compose --profile ${{ env.DEPLOY_PROFILE }} down
             docker compose --profile ${{ env.DEPLOY_PROFILE }} build --no-cache
             docker compose --profile ${{ env.DEPLOY_PROFILE }} up -d
             docker compose up -d nginx
             docker compose exec -T nginx nginx -s reload
+            echo "Deploy complete!"
