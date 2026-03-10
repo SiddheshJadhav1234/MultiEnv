@@ -7,6 +7,7 @@ on:
       - test
       - stage
       - main
+      - prod
 
 jobs:
 
@@ -21,7 +22,7 @@ jobs:
       - name: Set deploy profile
         run: |
           BRANCH="${{ github.ref_name }}"
-          if [ "$BRANCH" = "main" ]; then
+          if [ "$BRANCH" = "prod" ] || [ "$BRANCH" = "main" ]; then
             echo "DEPLOY_PROFILE=prod" >> $GITHUB_ENV
           elif [ "$BRANCH" = "stage" ]; then
             echo "DEPLOY_PROFILE=staging" >> $GITHUB_ENV
