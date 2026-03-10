@@ -56,7 +56,8 @@ jobs:
             docker pull node:18
             echo "Rebuilding containers for profile: ${{ env.DEPLOY_PROFILE }}..."
             docker compose --profile ${{ env.DEPLOY_PROFILE }} down
-            docker image rm multienv-frontend-${{ env.DEPLOY_PROFILE }} multienv-backend-${{ env.DEPLOY_PROFILE }} 2>nul || true
+            docker image rm multienv-frontend-${{ env.DEPLOY_PROFILE }} 2>nul
+            docker image rm multienv-backend-${{ env.DEPLOY_PROFILE }} 2>nul
             docker compose --profile ${{ env.DEPLOY_PROFILE }} build
             docker compose --profile ${{ env.DEPLOY_PROFILE }} up -d --force-recreate
             docker compose up -d nginx
