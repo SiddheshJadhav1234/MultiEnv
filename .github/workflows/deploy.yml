@@ -51,6 +51,9 @@ jobs:
             git fetch origin
             git reset --hard origin/${{ env.DEPLOY_BRANCH }}
             git clean -fd
+            echo "Pulling base images..."
+            docker pull node:20
+            docker pull node:18
             echo "Rebuilding containers for profile: ${{ env.DEPLOY_PROFILE }}..."
             docker compose --profile ${{ env.DEPLOY_PROFILE }} down
             docker compose --profile ${{ env.DEPLOY_PROFILE }} build
