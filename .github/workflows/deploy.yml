@@ -44,13 +44,10 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           timeout: 120s
+          command_timeout: 30m
           script: |
             cd C:/Users/vivek126/deployments/MultiEnv
-            git fetch --all
-            git checkout ${{ env.DEPLOY_BRANCH }}
-            git pull origin ${{ env.DEPLOY_BRANCH }}
-            docker compose --profile ${{ env.DEPLOY_PROFILE }} down
-            docker compose --profile ${{ env.DEPLOY_PROFILE }} build --no-cache
-            docker compose --profile ${{ env.DEPLOY_PROFILE }} up -d
-            docker compose up -d nginx
-            docker compose exec -T nginx nginx -s reload
+            git fetch origin
+            git reset --hard origin/${{ env.DEPLOY_BRANCH }}
+            git clean -fd
+            powershell -ExecutionPolicy Bypass -NonInteractive -File C:/Users/vivek126/deployments/MultiEnv/scripts/deploy.ps1 -Profile ${{ env.DEPLOY_PROFILE }}
