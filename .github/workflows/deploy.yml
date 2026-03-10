@@ -47,19 +47,7 @@ jobs:
           command_timeout: 30m
           script: |
             cd C:/Users/vivek126/deployments/MultiEnv
-            echo "Updating repository..."
             git fetch origin
             git reset --hard origin/${{ env.DEPLOY_BRANCH }}
             git clean -fd
-            echo "Pulling base images..."
-            docker pull node:20
-            docker pull node:18
-            echo "Rebuilding containers for profile: ${{ env.DEPLOY_PROFILE }}..."
-            docker compose --profile ${{ env.DEPLOY_PROFILE }} down
-            docker image rm multienv-frontend-${{ env.DEPLOY_PROFILE }} 2>nul
-            docker image rm multienv-backend-${{ env.DEPLOY_PROFILE }} 2>nul
-            docker compose --profile ${{ env.DEPLOY_PROFILE }} build
-            docker compose --profile ${{ env.DEPLOY_PROFILE }} up -d --force-recreate
-            docker compose up -d nginx
-            docker compose exec -T nginx nginx -s reload
-            echo "Deploy complete!"
+            powershell -ExecutionPolicy Bypass -NonInteractive -File C:/Users/vivek126/deployments/MultiEnv/scripts/deploy.ps1 -Profile ${{ env.DEPLOY_PROFILE }}
