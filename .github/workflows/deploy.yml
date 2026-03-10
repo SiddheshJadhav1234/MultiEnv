@@ -52,33 +52,3 @@ jobs:
             git reset --hard origin/${{ env.DEPLOY_BRANCH }}
             git clean -fd
             powershell -ExecutionPolicy Bypass -NonInteractive -File C:/Users/vivek126/deployments/MultiEnv/scripts/deploy.ps1 -Profile ${{ env.DEPLOY_PROFILE }}
-
-      # ── AUTO-PROMOTION (Continuous Deployment) ──────────────────────────
-      # dev → test → stage → prod   (prod is the final gate, no promotion)
-      - name: Auto-promote to next environment
-        if: github.ref_name != 'prod' && github.ref_name != 'main'
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
-        run: |
-          BRANCH="${{ github.ref_name }}"
-          if   [ "$BRANCH" = "dev" ];   then NEXT="test"
-          elif [ "$BRANCH" = "test" ];  then NEXT="stage"
-          elif [ "$BRANCH" = "stage" ]; then NEXT="prod"
-          else
-            echo "No promotion configured for branch: ${BRANCH}"
-            exit 0
-          fi
-
-          if [ -z "${GH_PAT}" ]; then
-            echo "⚠️  GH_PAT secret not set — skipping auto-promotion from ${BRANCH} → ${NEXT}."
-            exit 0
-          fi
-
-          git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git remote set-url origin "https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}"
-          git fetch origin "${NEXT}"
-          git checkout -B "${NEXT}" "origin/${NEXT}"
-          git merge --no-ff "origin/${BRANCH}" -m "ci: auto-promote ${BRANCH} → ${NEXT} [skip ci on ${BRANCH}]"
-          git push origin "${NEXT}"
-          echo "✅ Promoted ${BRANCH} → ${NEXT}"
